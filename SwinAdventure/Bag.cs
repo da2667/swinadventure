@@ -26,7 +26,7 @@ namespace SwinAdventure
         {
             get
             {
-                return Name + " " + ShortDescription + " " + _inventory.ItemList;
+                return "In the " + Name + " you can see: " + _inventory.ItemList;
             }
         }
 

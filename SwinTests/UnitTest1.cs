@@ -19,13 +19,13 @@ public class Tests
     [SetUp]
     public void Setup()
     {
-        b1 = new Bag(new string[] { "bag", "items" }, "item", "bag");
-        b2 = new Bag(new string[] { "bag 2", "items" }, "item", "bag");
-        i1 = new Item(new string[] { "sword", "red" }, "red sword", "red");
-        i2 = new Item(new string[] { "dagger", "blue" }, "blue dagger", "blue");
-        gem = new Item(new string[] { "gem", "purple" }, "purple gem", "purple");
+        b1 = new Bag(new string[] { "bag", "items" }, "bag", "A bag of doom");
+        b2 = new Bag(new string[] { "bag 2", "items" }, "bag 2", "A second bag of somewhat doom");
+        i1 = new Item(new string[] { "sword", "red" }, "red sword", "A red sword of the deadliest power");
+        i2 = new Item(new string[] { "dagger", "blue" }, "blue dagger", "This is a blue dagger");
+        gem = new Item(new string[] { "gem", "purple" }, "purple gem", "This is a purple gem");
         lCmd = new LookCommand(new string[] { });
-        p = new Player("dylan", "player #1");
+        p = new Player("Dylan", "Player of OOP");
         pi = new Inventory();
     }
    
@@ -137,7 +137,7 @@ public class Tests
     {
         string ItemFullDescription = i1.FullDescription;
 
-        Assert.That(ItemFullDescription, Is.EqualTo(i1.FullDescription));
+        Assert.That(ItemFullDescription, Is.EqualTo("A red sword of the deadliest power"));
     }
 
     // Inventory Unit Tests
@@ -238,7 +238,7 @@ public class Tests
     {
         string PlayerFullDescription = p.FullDescription;
 
-        Assert.That(PlayerFullDescription, Is.EqualTo(p.FullDescription));
+        Assert.That(PlayerFullDescription, Is.EqualTo("Player of OOP"));
     }
 
     // Bag Unit Tests
@@ -249,8 +249,13 @@ public class Tests
         b1.Inventory.Put(i1);
 
         GameObject LocatedItem = b1.Locate(i1.FirstId);
+        Item ItemInBagInventory = b1.Inventory.Fetch(i1.FirstId);
 
-        Assert.That(LocatedItem, Is.EqualTo(i1));
+        Assert.Multiple(() =>
+        {
+            Assert.That(ItemInBagInventory, Is.EqualTo(i1));
+            Assert.That(LocatedItem, Is.EqualTo(i1));
+        });
     }
 
     [Test]
@@ -272,9 +277,12 @@ public class Tests
     [Test]
     public void TestBagFullDescription()
     {
+        b1.Inventory.Put(i1);
+        b1.Inventory.Put(i2);
+
         string FullDescription = b1.FullDescription;
 
-        Assert.That(b1.FullDescription, Is.EqualTo(FullDescription));
+        Assert.That(b1.FullDescription, Is.EqualTo("In the bag you can see: " + b1.Inventory.ItemList));
     }
 
     [Test]
@@ -304,7 +312,7 @@ public class Tests
     {
         string playerInventory = lCmd.Execute(p, new string[]{ "look", "at", "inventory" });
 
-        Assert.That(playerInventory, Is.EqualTo(p.FullDescription));
+        Assert.That(playerInventory, Is.EqualTo("Player of OOP"));
     }
 
     [Test]

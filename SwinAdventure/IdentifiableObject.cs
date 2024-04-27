@@ -17,7 +17,7 @@ namespace SwinAdventure
 
 		public bool AreYou(string id)
 		{
-			return _identifiers.Contains(id, StringComparer.OrdinalIgnoreCase);
+			return _identifiers.Contains(id.ToLower());
 			
 		}
 
