@@ -20,12 +20,12 @@ public class Tests
     public void Setup()
     {
         b1 = new Bag(new string[] { "bag", "items" }, "bag", "A bag of doom");
-        b2 = new Bag(new string[] { "bag 2", "items" }, "bag 2", "A second bag of somewhat doom");
-        i1 = new Item(new string[] { "sword", "red" }, "red sword", "A red sword of the deadliest power");
-        i2 = new Item(new string[] { "dagger", "blue" }, "blue dagger", "This is a blue dagger");
-        gem = new Item(new string[] { "gem", "purple" }, "purple gem", "This is a purple gem");
+        b2 = new Bag(new string[] { "bag 2", "items" }, "2nd bag", "A second bag of somewhat doom");
+        i1 = new Item(new string[] { "sword", "red" }, "sword", "A red sword of the deadliest power");
+        i2 = new Item(new string[] { "dagger", "blue" }, "dagger", "This is a blue dagger");
+        gem = new Item(new string[] { "gem", "purple" }, "gem", "This is a purple gem");
         lCmd = new LookCommand(new string[] { });
-        p = new Player("Dylan", "Player of OOP");
+        p = new Player("Dylan", "A cool OOP student");
         pi = new Inventory();
     }
    
@@ -129,7 +129,7 @@ public class Tests
 
         string ItemShortDescription = i1.ShortDescription;
 
-        Assert.That(ItemShortDescription, Is.EqualTo("a " + "red sword " + "(sword)"));
+        Assert.That(ItemShortDescription, Is.EqualTo("a sword (sword)"));
     }
 
     [Test]
@@ -192,7 +192,7 @@ public class Tests
         pi.Put(i1);
         pi.Put(i2);
 
-        Assert.That(pi.ItemList, Is.EqualTo("\ta red sword (sword)\n\ta blue dagger (dagger)\n"));
+        Assert.That(pi.ItemList, Is.EqualTo("\ta sword (sword)\r\n\ta dagger (dagger)\r\n"));
     }
 
     // Player Unit Tests
@@ -238,7 +238,7 @@ public class Tests
     {
         string PlayerFullDescription = p.FullDescription;
 
-        Assert.That(PlayerFullDescription, Is.EqualTo("Player of OOP"));
+        Assert.That(PlayerFullDescription, Is.EqualTo("You are Dylan, A cool OOP student. You are carrying: " + p.Inventory.ItemList));
     }
 
     // Bag Unit Tests
@@ -282,7 +282,7 @@ public class Tests
 
         string FullDescription = b1.FullDescription;
 
-        Assert.That(b1.FullDescription, Is.EqualTo("In the bag you can see: " + b1.Inventory.ItemList));
+        Assert.That(FullDescription, Is.EqualTo("In the bag you can see: " + b1.Inventory.ItemList));
     }
 
     [Test]
@@ -312,7 +312,7 @@ public class Tests
     {
         string playerInventory = lCmd.Execute(p, new string[]{ "look", "at", "inventory" });
 
-        Assert.That(playerInventory, Is.EqualTo("Player of OOP"));
+        Assert.That(playerInventory, Is.EqualTo("You are Dylan, A cool OOP student. You are carrying: " + p.Inventory.ItemList));
     }
 
     [Test]
@@ -321,7 +321,7 @@ public class Tests
         p.Inventory.Put(gem);
         string gemDescription = lCmd.Execute(p, new string[] { "look", "at", "gem", "in", "inventory" });
 
-        Assert.That(gemDescription, Is.EqualTo(gem.FullDescription));
+        Assert.That(gemDescription, Is.EqualTo("This is a purple gem"));
     }
 
     [Test]
@@ -339,7 +339,7 @@ public class Tests
         p.Inventory.Put(gem);
         string gemDescription = lCmd.Execute(p, new string[] { "look", "at", "gem", "in", "inventory" });
 
-        Assert.That(gemDescription, Is.EqualTo(gem.FullDescription));
+        Assert.That(gemDescription, Is.EqualTo("This is a purple gem"));
     }
 
     [Test]
@@ -349,7 +349,7 @@ public class Tests
         p.Inventory.Put(b1);
         string gemDescription = lCmd.Execute(p, new string[] { "look", "at", "gem", "in", "bag" });
 
-        Assert.That(gemDescription, Is.EqualTo(gem.FullDescription));
+        Assert.That(gemDescription, Is.EqualTo("This is a purple gem"));
     }
     [Test]
     public void TestLookAtGemInNoBag()
